@@ -7,7 +7,7 @@ export default function Header() {
 
   const isHome = useMemo(() => pathname === "/", [pathname]);
 
-  // const categories = useAppStore((state) => state.categories);
+  const categories = useAppStore((state) => state.categories);
   const fetchCategories = useAppStore((state) => state.fetchCategories);
 
   useEffect(() => {
@@ -107,11 +107,14 @@ export default function Header() {
                 className="mt-2 w-full rounded-lg p-3 text-gray-900 focus:outline-none"
               >
                 <option value=""> --- Selecciona una categoria ---</option>
-                {/* {categories.map((category) => (
-                  // <option key={category} value={category}>
-                  //   {category}
-                  // </option>
-                ))} */}
+                {categories.drinks.map((category) => (
+                  <option
+                    key={category.strCategory}
+                    value={category.strCategory}
+                  >
+                    {category.strCategory}
+                  </option>
+                ))}
               </select>
             </div>
             <button
