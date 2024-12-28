@@ -1,6 +1,10 @@
 // import { Link } from "react-router-dom";
-import { NavLink } from "react-router-dom";
+import { useMemo } from "react";
+import { NavLink, useLocation } from "react-router-dom";
 export default function Header() {
+  const { pathname } = useLocation();
+
+  const isHome = useMemo(() => pathname === "/", [pathname]);
   return (
     <header className="bg-slate-800">
       <div className="container mx-auto px-5 py-16">
@@ -63,6 +67,47 @@ export default function Header() {
             </ul>
           </nav>
         </div>
+        {isHome && (
+          <form className="my-32 space-y-6 rounded-xl bg-orange-500 p-10 shadow md:w-1/2 2xl:w-1/3">
+            <div className="space-y-4">
+              <label
+                htmlFor="ingredient"
+                className="block text-lg font-extrabold text-white"
+              >
+                Nombre o Ingrediente
+              </label>
+              <input
+                type="text"
+                id="ingredient"
+                name="ingredient"
+                placeholder="Nombre o Ingrediente. Ej. Vodka, Ron, etc."
+                className="mt-2 w-full rounded-lg p-3 text-gray-900 focus:outline-none"
+              />
+            </div>
+            <div className="space-y-4">
+              <label
+                htmlFor="ingredient"
+                className="block text-lg font-extrabold text-white"
+              >
+                Categoria
+              </label>
+              <select
+                id="ingredient"
+                name="ingredient"
+                className="mt-2 w-full rounded-lg p-3 text-gray-900 focus:outline-none"
+              >
+                <option value=""> --- Selecciona una categoria ---</option>
+                {}
+              </select>
+            </div>
+            <button
+              type="submit"
+              className="w-full cursor-pointer rounded-lg bg-orange-400 p-3 font-extrabold uppercase text-white hover:bg-orange-600"
+            >
+              Buscar
+            </button>
+          </form>
+        )}
       </div>
     </header>
   );
