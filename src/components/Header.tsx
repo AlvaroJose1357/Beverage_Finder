@@ -12,7 +12,7 @@ export default function Header() {
 
   useEffect(() => {
     fetchCategories();
-  }, [fetchCategories]);
+  }, []);
   return (
     <header
       className={isHome ? "bg-header bg-cover bg-center" : "bg-slate-800"}
