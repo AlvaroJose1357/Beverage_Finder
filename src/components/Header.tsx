@@ -14,6 +14,7 @@ export default function Header() {
 
   const categories = useAppStore((state) => state.categories);
   const fetchCategories = useAppStore((state) => state.fetchCategories);
+  const searchRecipes = useAppStore((state) => state.searchRecipes);
 
   useEffect(() => {
     fetchCategories();
@@ -32,6 +33,13 @@ export default function Header() {
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+    // Validacion de formulario
+    if (Object.values(searchFilter).includes("")) {
+      alert("Todos los campos son requeridos");
+      return;
+    }
+    // consultar receta
+    searchRecipes(searchFilter);
     // const form = new FormData(event.currentTarget);
     // setSSearchFilter({
     //   ingredient: form.get("ingredient") as string,
