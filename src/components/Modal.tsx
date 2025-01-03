@@ -5,12 +5,35 @@ import {
   Transition,
   TransitionChild,
 } from "@headlessui/react";
-import { Fragment } from "react";
+import { Fragment, JSX } from "react";
 import { useAppStore } from "../stores/useAppStore";
+import { Recipe } from "../types";
 
 export default function Modal() {
   const modal = useAppStore((state) => state.modal);
   const closeModal = useAppStore((state) => state.closeModal);
+  const selectedRecipe = useAppStore((state) => state.selectedRecipe);
+  // se crea esta funcion para renderizar los ingredientes y cantidades ya que en la api vienen de forma separada y no se puede hacer un map, aparte de que no se sabe cuantos ingredientes tiene cada receta por lo que se hace un for para recorrer los 15 ingredientes de la API que se pueden tener
+  const renderIngredients = () => {
+    // se crea un array de elementos JSX para poder renderizar los ingredientes
+    const ingredientes: JSX.Element[] = [];
+    // se recorren los 15 ingredientes que se pueden tener en la API
+    for (let i = 1; i <= 15; i++) {
+      // se obtiene el ingrediente y la cantidad de la receta seleccionada en la API, se hace un cast as keyof Recipe para que no haya error en la compilacion ya que se esta accediendo a una propiedad dinamica, este va y busca la propiedad que se le pase en el objeto Recipe
+      const ingredient = selectedRecipe[`strIngredient${i}` as keyof Recipe];
+      const measure = selectedRecipe[`strMeasure${i}` as keyof Recipe];
+      // si el ingrediente existe se agrega al array de ingredientes para renderizarlo en el modal por medio de una lista
+      if (ingredient && measure) {
+        ingredientes.push(
+          <li key={i} className="text-lg font-normal">
+            {measure} - {ingredient}
+          </li>,
+        );
+      }
+    }
+    return ingredientes;
+  };
+
   return (
     <>
       <Transition appear show={modal} as={Fragment}>
@@ -43,20 +66,27 @@ export default function Modal() {
                     as="h3"
                     className="my-5 text-center text-4xl font-extrabold text-gray-900"
                   >
-                    Titulo Aquí
+                    {selectedRecipe.strDrink}
                   </DialogTitle>
+                  <img
+                    src={selectedRecipe.strDrinkThumb}
+                    alt={`imagen de ${selectedRecipe.strDrink}`}
+                    className="mx-auto w-96"
+                  />
                   <DialogTitle
                     as="h3"
                     className="my-5 text-2xl font-extrabold text-gray-900"
                   >
                     Ingredientes y Cantidades
                   </DialogTitle>
+                  {renderIngredients()}
                   <DialogTitle
                     as="h3"
                     className="my-5 text-2xl font-extrabold text-gray-900"
                   >
                     Instrucciones
                   </DialogTitle>
+                  {selectedRecipe.strInstructions}
                 </DialogPanel>
               </TransitionChild>
             </div>
