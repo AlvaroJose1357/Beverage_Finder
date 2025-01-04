@@ -2,6 +2,10 @@ import { StateCreator } from "zustand";
 import { Recipe } from "../types";
 // importando otros elementos desde otro slice mas conocido como nested slices
 import { createRecipeSlice, RecipeSliceType } from "./recipeSlice";
+import {
+  createNotificationSlice,
+  NotificationSliceType,
+} from "./notificationSlice";
 
 export type FavoritesSliceType = {
   favorites: Recipe[];
@@ -12,7 +16,7 @@ export type FavoritesSliceType = {
 
 // esta es la forma de obtener los datos desde otro slice, pero esta forma debido a su forma en la cual se esta accediendo a los datos no es la mas optima ni la mas recomendada
 export const createFavoritesSlice: StateCreator<
-  FavoritesSliceType & RecipeSliceType,
+  FavoritesSliceType & RecipeSliceType & NotificationSliceType,
   [],
   [],
   FavoritesSliceType
@@ -32,11 +36,19 @@ export const createFavoritesSlice: StateCreator<
           (favorite) => favorite.idDrink !== recipe.idDrink,
         ),
       }));
+      createNotificationSlice(set, get, api).showNotification({
+        text: "Receta eliminada de favoritos",
+        error: false,
+      });
     } else {
       console.log("no existe en favoritos");
       // este se puede hacer de 2 formas y de cualquiera de las 2 formas se puede acceder a los favoritos
       //set({ favorites: [...get().favorites, recipe] });
       set((state) => ({ favorites: [...state.favorites, recipe] }));
+      createNotificationSlice(set, get, api).showNotification({
+        text: "Receta agregada a favoritos",
+        error: false,
+      });
     }
     createRecipeSlice(set, get, api).closeModal();
     localStorage.setItem("favorites", JSON.stringify(get().favorites));
