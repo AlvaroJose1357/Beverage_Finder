@@ -4,6 +4,7 @@ import { Recipe } from "../types";
 export type FavoritesSliceType = {
   favorites: Recipe[];
   hangleClickFavorite: (recipe: Recipe) => void;
+  favoriteExists: (id: Recipe["idDrink"]) => boolean;
 };
 
 export const createFavoritesSlice: StateCreator<FavoritesSliceType> = (
@@ -12,9 +13,7 @@ export const createFavoritesSlice: StateCreator<FavoritesSliceType> = (
 ) => ({
   favorites: [],
   hangleClickFavorite: (recipe) => {
-    if (
-      get().favorites.some((favorite) => favorite.idDrink === recipe.idDrink)
-    ) {
+    if (get().favoriteExists(recipe.idDrink)) {
       console.log("ya existe en favoritos");
       // se filtran los favoritos para que no se repita la receta y si este ya existe en favoritos se elimina
       // set({
@@ -33,5 +32,8 @@ export const createFavoritesSlice: StateCreator<FavoritesSliceType> = (
       //set({ favorites: [...get().favorites, recipe] });
       set((state) => ({ favorites: [...state.favorites, recipe] }));
     }
+  },
+  favoriteExists: (id) => {
+    return get().favorites.some((favorite) => favorite.idDrink === id);
   },
 });

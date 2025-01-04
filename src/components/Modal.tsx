@@ -14,6 +14,7 @@ export default function Modal() {
   const closeModal = useAppStore((state) => state.closeModal);
   const selectedRecipe = useAppStore((state) => state.selectedRecipe);
   const hangleClickFavorite = useAppStore((state) => state.hangleClickFavorite);
+  const favoriteExists = useAppStore((state) => state.favoriteExists);
   // se crea esta funcion para renderizar los ingredientes y cantidades ya que en la api vienen de forma separada y no se puede hacer un map, aparte de que no se sabe cuantos ingredientes tiene cada receta por lo que se hace un for para recorrer los 15 ingredientes de la API que se pueden tener
   const renderIngredients = () => {
     // se crea un array de elementos JSX para poder renderizar los ingredientes
@@ -101,7 +102,9 @@ export default function Modal() {
                       className="w-full rounded bg-orange-600 p-3 font-bold uppercase text-white shadow hover:bg-orange-500"
                       onClick={() => hangleClickFavorite(selectedRecipe)}
                     >
-                      Agregar a favoritos
+                      {favoriteExists(selectedRecipe.idDrink)
+                        ? "Eliminar de Favoritos"
+                        : "Agregar a Favoritos"}
                     </button>
                   </div>
                 </DialogPanel>
