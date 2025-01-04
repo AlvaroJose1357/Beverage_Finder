@@ -100,6 +100,12 @@ export default function Modal() {
                     <button
                       type="button"
                       className="w-full rounded bg-orange-600 p-3 font-bold uppercase text-white shadow hover:bg-orange-500"
+                      // esta seria la forma facil de cerrar el modal siempre que se haga click en el boton de favoritos
+                      // onClick={() => {
+                      //   hangleClickFavorite(selectedRecipe);
+                      //   closeModal();
+                      // }}
+                      // y esta es la forma de cerrar el modal consumiendo otro slice de zustand
                       onClick={() => hangleClickFavorite(selectedRecipe)}
                     >
                       {favoriteExists(selectedRecipe.idDrink)

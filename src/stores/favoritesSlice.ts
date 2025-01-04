@@ -1,5 +1,7 @@
 import { StateCreator } from "zustand";
 import { Recipe } from "../types";
+// importando otros elementos desde otro slice mas conocido como nested slices
+import { createRecipeSlice, RecipeSliceType } from "./recipeSlice";
 
 export type FavoritesSliceType = {
   favorites: Recipe[];
@@ -7,10 +9,13 @@ export type FavoritesSliceType = {
   favoriteExists: (id: Recipe["idDrink"]) => boolean;
 };
 
-export const createFavoritesSlice: StateCreator<FavoritesSliceType> = (
-  set,
-  get,
-) => ({
+// esta es la forma de obtener los datos desde otro slice, pero esta forma debido a su forma en la cual se esta accediendo a los datos no es la mas optima ni la mas recomendada
+export const createFavoritesSlice: StateCreator<
+  FavoritesSliceType & RecipeSliceType,
+  [],
+  [],
+  FavoritesSliceType
+> = (set, get, api) => ({
   favorites: [],
   hangleClickFavorite: (recipe) => {
     if (get().favoriteExists(recipe.idDrink)) {
@@ -32,6 +37,7 @@ export const createFavoritesSlice: StateCreator<FavoritesSliceType> = (
       //set({ favorites: [...get().favorites, recipe] });
       set((state) => ({ favorites: [...state.favorites, recipe] }));
     }
+    createRecipeSlice(set, get, api).closeModal();
   },
   favoriteExists: (id) => {
     return get().favorites.some((favorite) => favorite.idDrink === id);

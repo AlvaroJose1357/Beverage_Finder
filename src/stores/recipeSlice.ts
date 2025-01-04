@@ -5,6 +5,7 @@ import {
   getRecipes,
 } from "../services/RecipeService";
 import type { Categories, Drink, Drinks, Recipe, SearchFilter } from "../types";
+import { FavoritesSliceType } from "./favoritesSlice";
 
 export type RecipeSliceType = {
   categories: Categories;
@@ -17,7 +18,13 @@ export type RecipeSliceType = {
   closeModal: () => void;
 };
 
-export const createRecipeSlice: StateCreator<RecipeSliceType> = (set) => ({
+// los dobles corchetes son para que el array sea de tipo RecipeSliceType y FavoritesSliceType y este no espera parametros adicionales por lo que se deja vacio
+export const createRecipeSlice: StateCreator<
+  RecipeSliceType & FavoritesSliceType,
+  [],
+  [],
+  RecipeSliceType
+> = (set) => ({
   categories: { drinks: [] },
   drinks: { drinks: [] },
   selectedRecipe: {} as Recipe,
