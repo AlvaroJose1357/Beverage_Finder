@@ -4,6 +4,7 @@ import Layout from "../layouts/Layout";
 
 const IndexPage = lazy(() => import("../pages/IndexPage"));
 const FavoritePage = lazy(() => import("../pages/FavoritePage"));
+const GenerateAI = lazy(() => import("../pages/GenerateAI"));
 export default function Router() {
   return (
     <BrowserRouter>
@@ -23,6 +24,14 @@ export default function Router() {
             element={
               <Suspense fallback={<div>Loading...</div>}>
                 <FavoritePage />
+              </Suspense>
+            }
+          />
+          <Route
+            path="/generate-ai"
+            element={
+              <Suspense fallback={<div>Loading...</div>}>
+                <GenerateAI />
               </Suspense>
             }
           />

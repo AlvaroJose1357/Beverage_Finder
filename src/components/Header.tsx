@@ -111,6 +111,18 @@ export default function Header() {
                   Favoritos
                 </NavLink>
               </li>
+              <li>
+                <NavLink
+                  to="/generate-ai"
+                  className={({ isActive }) =>
+                    isActive
+                      ? "font-bold uppercase text-orange-500 transition-colors hover:text-gray-300"
+                      : "font-bold uppercase text-white transition-colors hover:text-gray-300"
+                  }
+                >
+                  Generar con IA
+                </NavLink>
+              </li>
             </ul>
           </nav>
         </div>
