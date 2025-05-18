@@ -1,10 +1,34 @@
+import { useAppStore } from "../stores/useAppStore";
+
 export default function GenerateAI() {
+  const showNotification = useAppStore((state) => state.showNotification);
+  const generateRecipe = useAppStore((state) => state.generateRecipe);
+
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    // Aquí puedes manejar el envío del formulario
+
+    const form = new FormData(event.currentTarget); // Obtener los datos del formulario
+    const prompt = form.get("prompt") as string; // Obtener el valor del campo 'prompt'
+
+    if (prompt.trim() === "") {
+      // Validación simple para asegurarse de que el prompt no esté vacío
+      showNotification({
+        text: "El campo de prompt no puede estar vacío",
+        error: true,
+      });
+      return;
+    }
+
+    // Llamar a la función para generar la receta
+    await generateRecipe(prompt);
+  };
   return (
     <>
       <h1 className="text-6xl font-extrabold">Generar Receta con IA</h1>
 
       <div className="mx-auto max-w-4xl">
-        <form onSubmit={() => {}} className="flex flex-col space-y-3 py-10">
+        <form onSubmit={handleSubmit} className="flex flex-col space-y-3 py-10">
           <div className="relative">
             <input
               name="prompt"
