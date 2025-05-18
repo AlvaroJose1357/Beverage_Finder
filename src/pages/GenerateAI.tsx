@@ -4,6 +4,7 @@ export default function GenerateAI() {
   const showNotification = useAppStore((state) => state.showNotification);
   const generateRecipe = useAppStore((state) => state.generateRecipe);
   const recipe = useAppStore((state) => state.recipe);
+  const isGenerative = useAppStore((state) => state.isGenerative);
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -40,7 +41,8 @@ export default function GenerateAI() {
             <button
               type="submit"
               aria-label="Enviar"
-              className={`absolute right-5 top-1/2 -translate-x-1/2 -translate-y-1/2 transform cursor-pointer`}
+              className={`absolute right-5 top-1/2 -translate-x-1/2 -translate-y-1/2 transform cursor-pointer ${isGenerative ? "cursor-not-allowed opacity-50" : ""}`}
+              disabled={isGenerative}
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -59,8 +61,33 @@ export default function GenerateAI() {
             </button>
           </div>
         </form>
-
-        <div className="whitespace-pre-wrap py-10">{recipe}</div>
+        {isGenerative ? (
+          <div className="flex flex-col items-center justify-center py-10">
+            <svg
+              className="h-20 w-20 animate-spin text-slate-800"
+              width="79"
+              height="79"
+              viewBox="0 0 24 24"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                opacity="0.2"
+                fillRule="evenodd"
+                clipRule="evenodd"
+                d="M12 19C15.866 19 19 15.866 19 12C19 8.13401 15.866 5 12 5C8.13401 5 5 8.13401 5 12C5 15.866 8.13401 19 12 19ZM12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22Z"
+                fill="currentColor"
+              />
+              <path
+                d="M2 12C2 6.47715 6.47715 2 12 2V5C8.13401 5 5 8.13401 5 12H2Z"
+                fill="currentColor"
+              />
+            </svg>
+            <p className="mt-2 text-sm text-gray-500">Generando receta...</p>
+          </div>
+        ) : (
+          recipe && <div className="whitespace-pre-wrap">{recipe}</div>
+        )}
       </div>
     </>
   );
